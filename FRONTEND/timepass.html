@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycler Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #1A4D46;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        .sidebar h2 {
+            margin-bottom: 30px;
+            font-size: 22px;
+            white-space: nowrap;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: left;
+            width: 100%;
+        }
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: #02BBAD;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #2e7d32;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>Recycler Dashboard</h2>
+        <ul id="menu-list">
+            <li><a href="retailer_overview.html" data-page="overview" class="menu-item active">Overview</a></li>
+            <li><a href="pickupRequest.html" data-page="pickup" class="menu-item">Pickup Requests</a></li>
+            <li><a href="sorting&processing.html" data-page="sorting" class="menu-item">Sorting & Processing</a></li>
+            <button onclick="logoutUser()">Logout</button>
+        </ul>
+    </aside>
+    <main class="content" id="main-content">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading content...</p>
+        </div>
+        <div id="content-area"></div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuItems = document.querySelectorAll(".menu-item");
+            const contentArea = document.getElementById("content-area");
+            const loading = document.getElementById("loading");
+            const sidebar = document.querySelector(".sidebar");
+            const menuList = document.getElementById("menu-list");
+
+            function loadPage(pageUrl) {
+                loading.style.display = "block";
+                fetch(pageUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        contentArea.innerHTML = data;
+                        loading.style.display = "none";
+                    })
+                    .catch(error => {
+                        console.error("Error loading content:", error);
+                        contentArea.innerHTML = "<p>Error loading content.</p>";
+                        loading.style.display = "none";
+                    });
+            }
+
+            menuItems.forEach(item => {
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    menuItems.forEach(i => i.classList.remove("active"));
+                    this.classList.add("active");
+                    const page = this.getAttribute("href");
+                    loadPage(page);
+                });
+            });
+
+            // Ensure sidebar and menu remain properly aligned
+            sidebar.style.display = "flex";
+            sidebar.style.flexDirection = "column";
+            sidebar.style.alignItems = "flex-start";
+            menuList.style.display = "flex";
+            menuList.style.flexDirection = "column";
+            menuList.style.alignItems = "flex-start";
+
+            loadPage("retailer_overview.html");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #eaf4e0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .dashboard-content {
+            padding: 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .stat-card {
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-width: 280px;
+            flex: 1;
+            min-height: 150px;
+            font-size: 18px;
+            color: #003049;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #d62828;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            background-color: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+            margin-top: 20px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #003049;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-content">
+        <h1 class="opacity-0" id="overview-title">Overview</h1>
+
+        <div class="stats-container">
+            <div class="stat-card opacity-0">
+                <span>Total E-Waste Collected</span>
+                <span class="stat-number" id="total-waste">12,500</span>
+            </div>
+            <div class="stat-card opacity-0">
+                <span>Pending Pickups</span>
+                <span class="stat-number" id="pending-pickups">15</span>
+            </div>
+            <div class="stat-card opacity-0">
+                <span>Completed Pickups</span>
+                <span class="stat-number" id="completed-pickups">320</span>
+            </div>
+        </div>
+
+        <div class="section opacity-0" id="activities">
+            <h2>Recent Activities</h2>
+            <ul class="mt-2">
+                <li class="text-green-600">✔ Pickup completed from XYZ Corp - <strong>300 Kg</strong></li>
+                <li class="text-blue-600">✔ New pickup request from ABC Ltd.</li>
+                <li class="text-yellow-600">⚠ Delayed pickup at DEF Industries</li>
+            </ul>
+        </div>
+
+        <div class="section opacity-0" id="leaderboard">
+            <h2>Recycler Leaderboard</h2>
+            <ol class="mt-2">
+                <li class="text-red-600">1. Recycler A - <strong>5000 Kg</strong></li>
+                <li class="text-orange-600">2. Recycler B - <strong>4300 Kg</strong></li>
+                <li class="text-yellow-600">3. Recycler C - <strong>3900 Kg</strong></li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function runAnimations() {
+            gsap.fromTo("#overview-title", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 1 });
+            gsap.fromTo(".stat-card", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.8, stagger: 0.2 });
+            gsap.fromTo(".section", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.3, delay: 0.5 });
+        }
+
+        document.addEventListener("DOMContentLoaded", runAnimations);
+    </script>
+</body>
+</html>

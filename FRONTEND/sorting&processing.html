@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting & Processing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: "Arial", sans-serif;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            text-align: center; /* Center align content */
+        }
+
+        /* 🔥 Increased Top Margin for Better Spacing */
+        .heading {
+            margin-top: -10px; /* Moves heading slightly upward */
+            margin-bottom: 20px; /* Adds space below heading */
+        }
+
+        .card {
+            border-top: 5px solid #fcbf49;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            text-align: center;
+            height: 120px; /* 🔥 Reduced Height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #00FF00;
+            transition: width 1s ease-in-out;
+            border-radius: 5px;
+        }
+
+        .count {
+            font-size: 18px;
+            font-weight: bold;
+            color: #003049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto">
+        <h2 class="heading text-3xl font-semibold text-[#003049] text-center">Sorting & Processing</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card">
+                <h3 class="text-lg font-semibold text-[#003049]">Mobile Phones</h3>
+                <p class="text-gray-700">Sorted: <span class="count" id="mobiles-count">0</span> units</p>
+                <div class="progress-bar"><div id="mobiles-progress" class="progress-fill"></div></div>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-[#003049]">Laptops & Computers</h3>
+                <p class="text-gray-700">Sorted: <span class="count" id="laptops-count">0</span> units</p>
+                <div class="progress-bar"><div id="laptops-progress" class="progress-fill"></div></div>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-[#003049]">Televisions & Monitors</h3>
+                <p class="text-gray-700">Sorted: <span class="count" id="tvs-count">0</span> units</p>
+                <div class="progress-bar"><div id="tvs-progress" class="progress-fill"></div></div>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-[#003049]">Batteries</h3>
+                <p class="text-gray-700">Sorted: <span class="count" id="batteries-count">0</span> units</p>
+                <div class="progress-bar"><div id="batteries-progress" class="progress-fill"></div></div>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-[#003049]">Other Accessories</h3>
+                <p class="text-gray-700">Sorted: <span class="count" id="accessories-count">0</span> units</p>
+                <div class="progress-bar"><div id="accessories-progress" class="progress-fill"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function animateCount(id, targetValue, duration) {
+            let start = 0;
+            const step = Math.ceil(targetValue / (duration / 16));
+
+            function update() {
+                start += step;
+                if (start >= targetValue) {
+                    document.getElementById(id).textContent = targetValue;
+                } else {
+                    document.getElementById(id).textContent = start;
+                    requestAnimationFrame(update);
+                }
+            }
+            update();
+        }
+
+        function animateProgress(id, targetWidth) {
+            let progressBar = document.getElementById(id);
+            let width = 0;
+            
+            function updateProgress() {
+                width += 2;
+                if (width >= targetWidth) {
+                    progressBar.style.width = targetWidth + "%";
+                } else {
+                    progressBar.style.width = width + "%";
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+            updateProgress();
+        }
+
+        function loadSortingComponent() {
+            animateCount("mobiles-count", 150, 1000);
+            animateProgress("mobiles-progress", 90);
+
+            animateCount("laptops-count", 80, 1000);
+            animateProgress("laptops-progress", 70);
+
+            animateCount("tvs-count", 60, 1000);
+            animateProgress("tvs-progress", 60);
+
+            animateCount("batteries-count", 100, 1000);
+            animateProgress("batteries-progress", 75);
+
+            animateCount("accessories-count", 120, 1000);
+            animateProgress("accessories-progress", 85);
+        }
+
+        function observeSortingComponent() {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.addedNodes.length > 0) {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.id === "sorting-container" || node.classList.contains("sorting-section")) {
+                                setTimeout(loadSortingComponent, 500);
+                            }
+                        });
+                    }
+                });
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        document.addEventListener("DOMContentLoaded", observeSortingComponent);
+    </script>
+</body>
+</html>
